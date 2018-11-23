@@ -1,0 +1,6 @@
+#User
+POST          /user           controllers.UserController.addUser
+DELETE        /user           controllers.UserController.deleteUser
+GET           /user           controllers.UserController.getAllUsers
+
+      
