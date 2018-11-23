@@ -14,6 +14,7 @@ import scala.util.{Failure, Success}
 class UserController @Inject()(repo: UserDAO, cc: ControllerComponents)(implicit exec: ExecutionContext) extends AbstractController(cc) {
   def addUser = Action.async(parse.json[User]) { req => {
     repo.create(req.body).map({ user =>
+      ""
       val res = Response("Successfuly created new user with id: ", user)
       Ok(Json.toJson(res))
     })
