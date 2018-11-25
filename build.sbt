@@ -10,7 +10,7 @@ resolvers += "Akka Snapshot Repository" at "http://repo.akka.io/snapshots/"
 
 scalaVersion := "2.12.2"
 
-
+libraryDependencies += "com.typesafe.slick" %% "slick-codegen" % "3.2.0"
 libraryDependencies ++= Seq(
   "com.lightbend.play" %% "play-file-watch" % "1.1.3",
   "com.typesafe.play" %% "play-slick" % "3.0.0",
