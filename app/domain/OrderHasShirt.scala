@@ -1,3 +1,3 @@
 package domain
 
-case class OrderHasShirt(orderHasShirtId:Int, orderId:Int, shirtId:Int)
+case class OrderHasShirt(orderHasShirtId: Option[Int] = None, orderId: Int, shirtId: Int)
