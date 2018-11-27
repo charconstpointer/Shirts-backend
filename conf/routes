@@ -1,10 +1,13 @@
 #Order
 
-GET         /order/example        controllers.OrderController.getExample
-POST        /order/               controllers.OrderController.postOrder
-GET         /order/:id            controllers.OrderController.getOrderById(id:Int)
-GET         /order/               controllers.OrderController.getAllOrders
+GET           /order/example        controllers.OrderController.getExample
+POST          /order/               controllers.OrderController.postOrder
+GET           /order/:id            controllers.OrderController.getOrderById(id:Int)
+GET           /order/               controllers.OrderController.getAllOrders
 
 #Shirt
-GET         /shirt/               controllers.OrderController.getAllShirts
-POST        /shirt/               controllers.OrderController.postShirt
+GET           /shirt/               controllers.ShirtController.getAllShirts
+POST          /shirt/               controllers.ShirtController.postShirt
+GET           /shirt/:id            controllers.ShirtController.getShirt(id:Int)
+DELETE        /shirt/:id            controllers.ShirtController.deleteShirt(id:Int)
+PATCH         /shirt/:id            controllers.ShirtController.updateShirt(id:Int)

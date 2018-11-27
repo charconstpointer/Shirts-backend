@@ -19,8 +19,9 @@ libraryDependencies ++= Seq(
 //   "org.postgresql" % "postgresql" % "42.2.5"
 )
 
+
 libraryDependencies += "org.postgresql" % "postgresql" % "42.2.1"
-libraryDependencies ++= Seq( ehcache, ws, specs2 % Test, guice)
+libraryDependencies ++= Seq(filters, ehcache, ws, specs2 % Test, guice)
 
 unmanagedResourceDirectories in Test <+= baseDirectory(_ / "target/web/public/test")
 

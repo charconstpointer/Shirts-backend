@@ -10,15 +10,7 @@ import rest.OrderRest
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
-class OrderController @Inject()(orderRepository: OrderRepository, shirtRepository: ShirtRepository, cc: ControllerComponents)(implicit exec: ExecutionContext) extends AbstractController(cc) {
-
-  def getOrder = ()
-
-  def getAllShirts = Action.async { implicit request =>
-    shirtRepository.getAllShirts().map {
-      shirts => Created(Json.toJson(shirts))
-    }
-  }
+class OrderController @Inject()(orderRepository: OrderRepository, cc: ControllerComponents)(implicit exec: ExecutionContext) extends AbstractController(cc) {
 
   def getOrderById(id: Int) = Action.async { implicit request =>
     orderRepository.findById(id).map(res => Ok(Json.toJson(res)))
@@ -29,17 +21,6 @@ class OrderController @Inject()(orderRepository: OrderRepository, shirtRepositor
       orderRests =>
         orderRepository.create(orderRests) map {
           orderId => Created(Json.obj("id" -> orderId))
-        }
-    } recoverTotal { t =>
-      Future.successful(BadRequest(Json.obj("error" -> "Wrong JSON format")))
-    }
-  }
-
-  def postShirt() = Action.async(parse.json) { implicit request =>
-    request.body.validate[Shirt].map {
-      shirt =>
-        shirtRepository.create(shirt) map {
-          personId => Created(Json.obj("id" -> personId.get))
         }
     } recoverTotal { t =>
       Future.successful(BadRequest(Json.obj("error" -> "Wrong JSON format")))
