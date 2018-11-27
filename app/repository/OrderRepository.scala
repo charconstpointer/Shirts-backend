@@ -1,14 +1,11 @@
 package repository
 
-import java.sql.Timestamp
 
 import domain.{Order, OrderHasShirt, Shirt, Tables}
 import javax.inject.{Inject, Singleton}
 import play.api.db.slick.{DatabaseConfigProvider, HasDatabaseConfigProvider}
 import rest.OrderRest
 import slick.jdbc.JdbcProfile
-import slick.jdbc.PostgresProfile.api._
-import slick.lifted.RepOption
 
 import scala.concurrent.{ExecutionContext, Future}
 
@@ -18,6 +15,23 @@ class OrderRepository @Inject()(protected val dbConfigProvider: DatabaseConfigPr
 
   import dbConfig._
   import profile.api._
+
+  def findAllOrders(implicit ec: ExecutionContext) = {
+    db.run(getOrderQuery().result) map {
+      tuples =>
+        val grouped = tuples.groupBy(_._1)
+        grouped.map {
+          case (s, t) =>
+            val shirts = t.map(_._2).distinct.map { shi => Shirt(None, shi.size, shi.color, 1) }
+            OrderRest(
+              s.clientName,
+              s.clientAge,
+              s.date,
+              shirts.toList
+            )
+        }.toList
+    }
+  }
 
   def findById(id: Int)(implicit ec: ExecutionContext) = {
     db.run(getOrderQuery(Option(id)).result) map {

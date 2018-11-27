@@ -1,17 +1,16 @@
 package controllers
 
-import domain.{Order, OrderHasShirt, Shirt}
+import domain.{Order, Shirt}
 import javax.inject.{Inject, Singleton}
 import play.api.libs.json.Json
 import play.api.mvc.{AbstractController, ControllerComponents}
-import repository.{OrderHasShirtRepository, OrderRepository, ShirtRepository}
+import repository.{OrderRepository, ShirtRepository}
 import rest.OrderRest
-import service.ManageOrderService
 
-import scala.concurrent.{Await, ExecutionContext, Future}
+import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
-class OrderController @Inject()(orderHasShirtRepository: OrderHasShirtRepository, orderRepository: OrderRepository, manageOrderService: ManageOrderService, shirtRepository: ShirtRepository, cc: ControllerComponents)(implicit exec: ExecutionContext) extends AbstractController(cc) {
+class OrderController @Inject()(orderRepository: OrderRepository, shirtRepository: ShirtRepository, cc: ControllerComponents)(implicit exec: ExecutionContext) extends AbstractController(cc) {
 
   def getOrder = ()
 
@@ -22,10 +21,7 @@ class OrderController @Inject()(orderHasShirtRepository: OrderHasShirtRepository
   }
 
   def getOrderById(id: Int) = Action.async { implicit request =>
-    println("here")
-    orderRepository.getOrderById(id).map {
-      order => Ok(Json.toJson(order))
-    }
+    orderRepository.findById(id).map(res => Ok(Json.toJson(res)))
   }
 
   def postOrder = Action.async(parse.json) { implicit request =>
@@ -55,13 +51,6 @@ class OrderController @Inject()(orderHasShirtRepository: OrderHasShirtRepository
   }
 
   def getAllOrders() = Action.async {
-    orderRepository.getAllOrders.map { res => Ok(Json.toJson(res)) }
-  }
-
-  //  def getOrderById(orderId: Int) = Action.async {
-  //    orderRepository.getOrderById(orderId).map { res => Ok(Json.toJson(res)) }
-  //  }
-  def test = Action.async  { implicit request =>
-    orderRepository.findById(60).map(res => Ok(Json.toJson(res)))
+    orderRepository.findAllOrders.map { res => Ok(Json.toJson(res)) }
   }
 }

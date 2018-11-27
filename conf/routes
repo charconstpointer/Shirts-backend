@@ -1,8 +1,10 @@
-#Shirts
+#Order
 
-GET         /shirts/              controllers.OrderController.getAllShirts
-POST        /shirt/               controllers.OrderController.postShirt
 GET         /order/example        controllers.OrderController.getExample
 POST        /order/               controllers.OrderController.postOrder
 GET         /order/:id            controllers.OrderController.getOrderById(id:Int)
-GET         /ordertest/            controllers.OrderController.test
+GET         /order/               controllers.OrderController.getAllOrders
+
+#Shirt
+GET         /shirt/               controllers.OrderController.getAllShirts
+POST        /shirt/               controllers.OrderController.postShirt
