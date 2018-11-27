@@ -9,6 +9,6 @@ case class Order(orderId: Option[Int] = None, date: String, clientName: String, 
 object Order {
   implicit val orderFormat = Json.writes[Order]
   implicit val orderRead = Json.reads[Order]
-  implicit val tsreads: Reads[Timestamp] = Reads.of[Long] map (new Timestamp(_))
-  implicit val tswrites: Writes[Timestamp] = Writes { (ts: Timestamp) => JsString(ts.toString) }
+//  implicit val tsreads: Reads[Timestamp] = Reads.of[Long] map (new Timestamp(_))
+//  implicit val tswrites: Writes[Timestamp] = Writes { (ts: Timestamp) => JsString(ts.toString) }
 }

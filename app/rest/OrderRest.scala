@@ -2,9 +2,10 @@ package rest
 
 import java.sql.Timestamp
 
+import domain.Shirt
 import play.api.libs.json.{JsString, Json, Reads, Writes}
 
-case class OrderRest (name:String, age:Int, date:String, shirts:Seq[Int])
+case class OrderRest (name:String, age:Int, date:String, shirts:Seq[Shirt])
 
 
 object OrderRest {

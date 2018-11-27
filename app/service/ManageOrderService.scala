@@ -14,22 +14,22 @@ import scala.util.{Failure, Success}
 
 class ManageOrderService @Inject()(orderHasShirtRepository: OrderHasShirtRepository, orderRepository: OrderRepository, shirtRepository: ShirtRepository) {
 
-  def insertOrder(orderRest: OrderRest) = {
-    var rv: Option[Int] = null
-    orderRepository.addOrder(
-      Order(None,
-        orderRest.date,
-        orderRest.name,
-        orderRest.age)
-    ).onComplete {
-      case Success(value) => {
-        rv = value.orderId
-        orderHasShirtRepository.saveShirtOrder(IdToOrderHasShirt.convert(orderRest.shirts, value.orderId.get))
-      }
-      case Failure(exception) => {
-        rv = Some(-1)
-        exception.printStackTrace
-      }
-    }
-  }
+//  def insertOrder(orderRest: OrderRest) = {
+//    var rv: Option[Int] = null
+//    orderRepository.addOrder(
+//      Order(None,
+//        orderRest.date,
+//        orderRest.name,
+//        orderRest.age)
+//    ).onComplete {
+//      case Success(value) => {
+//        rv = value.orderId
+//        orderHasShirtRepository.saveShirtOrder(IdToOrderHasShirt.convert(orderRest.shirts, value.orderId.get))
+//      }
+//      case Failure(exception) => {
+//        rv = Some(-1)
+//        exception.printStackTrace
+//      }
+//    }
+//  }
 }

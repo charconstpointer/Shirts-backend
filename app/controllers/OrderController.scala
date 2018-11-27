@@ -2,41 +2,52 @@ package controllers
 
 import domain.{Order, OrderHasShirt, Shirt}
 import javax.inject.{Inject, Singleton}
-import org.omg.CORBA.Any
 import play.api.libs.json.Json
 import play.api.mvc.{AbstractController, ControllerComponents}
 import repository.{OrderHasShirtRepository, OrderRepository, ShirtRepository}
 import rest.OrderRest
 import service.ManageOrderService
-import util.TimestampHelper
 
-import scala.concurrent.duration.Duration
-import scala.concurrent.{Await, ExecutionContext}
-import scala.util.{Failure, Success}
+import scala.concurrent.{Await, ExecutionContext, Future}
 
 @Singleton
 class OrderController @Inject()(orderHasShirtRepository: OrderHasShirtRepository, orderRepository: OrderRepository, manageOrderService: ManageOrderService, shirtRepository: ShirtRepository, cc: ControllerComponents)(implicit exec: ExecutionContext) extends AbstractController(cc) {
 
   def getOrder = ()
 
-  def getAllShirts = Action.async {
-    shirtRepository.getAllShirts().map { res => Ok(Json.toJson(res)) }
+  def getAllShirts = Action.async { implicit request =>
+    shirtRepository.getAllShirts().map {
+      shirts => Created(Json.toJson(shirts))
+    }
   }
 
-  def createShirt() = Action.async(parse.json[Shirt]) { req => {
-    shirtRepository.create(req.body).map(res => Created(Json.toJson(res)))
+  def getOrderById(id: Int) = Action.async { implicit request =>
+    println("here")
+    orderRepository.getOrderById(id).map {
+      order => Ok(Json.toJson(order))
+    }
   }
-  }
-//
-//  def test = Action.async {
-//    orderHasShirtRepository.saveShirtOrder(Seq(1, 2, 3)).map { res => Ok(Json.toJson(res)) }
-//  }
 
-  def postOrder = Action(parse.json[OrderRest]) { req => {
-
-    Created(Json.toJson(manageOrderService.insertOrder(req.body) + "replace this"))
-//    Created(Json.toJson("localhost:9000/order/" + manageOrderService.insertOrder(req.body)))
+  def postOrder = Action.async(parse.json) { implicit request =>
+    request.body.validate[OrderRest].map {
+      orderRests =>
+        orderRepository.create(orderRests) map {
+          orderId => Created(Json.obj("id" -> orderId))
+        }
+    } recoverTotal { t =>
+      Future.successful(BadRequest(Json.obj("error" -> "Wrong JSON format")))
+    }
   }
+
+  def postShirt() = Action.async(parse.json) { implicit request =>
+    request.body.validate[Shirt].map {
+      shirt =>
+        shirtRepository.create(shirt) map {
+          personId => Created(Json.obj("id" -> personId.get))
+        }
+    } recoverTotal { t =>
+      Future.successful(BadRequest(Json.obj("error" -> "Wrong JSON format")))
+    }
   }
 
   def getExample() = Action {
@@ -47,7 +58,10 @@ class OrderController @Inject()(orderHasShirtRepository: OrderHasShirtRepository
     orderRepository.getAllOrders.map { res => Ok(Json.toJson(res)) }
   }
 
-  def getOrderById(orderId: Int) = Action.async {
-    orderRepository.getOrderById(orderId).map { res => Ok(Json.toJson(res)) }
+  //  def getOrderById(orderId: Int) = Action.async {
+  //    orderRepository.getOrderById(orderId).map { res => Ok(Json.toJson(res)) }
+  //  }
+  def test = Action.async  { implicit request =>
+    orderRepository.findById(60).map(res => Ok(Json.toJson(res)))
   }
 }
