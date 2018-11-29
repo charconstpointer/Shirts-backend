@@ -1,5 +1,4 @@
 # T-Shirt Shopping App
-```
 POSTing a Shirt
 ```
 {
