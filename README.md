@@ -4,7 +4,7 @@ POSTing an Order
 {
 	"name":"First order",
 	"age":13,
-	"date":"2019-11-12",
+	"date":"date",
 	"shirts":[
 		{
 			"shirtId":9,
@@ -27,7 +27,6 @@ POSTing an Order
 POSTing a Shirt
 ```
 {
-    "shirtId":10,
     "size":"XL",
     "color":"White",
     "count": 100
