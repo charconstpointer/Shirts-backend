@@ -1,6 +1,5 @@
 #Order
 
-GET           /order/example        controllers.OrderController.getExample
 POST          /order/               controllers.OrderController.postOrder
 GET           /order/:id            controllers.OrderController.getOrderById(id:Int)
 GET           /order/               controllers.OrderController.getAllOrders

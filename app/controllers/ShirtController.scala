@@ -4,7 +4,7 @@ import domain.Shirt
 import javax.inject.{Inject, Singleton}
 import play.api.libs.json.Json
 import play.api.mvc.{AbstractController, ControllerComponents}
-import repository.{OrderRepository, ShirtRepository}
+import repository.{ShirtRepository}
 
 import scala.concurrent.{ExecutionContext, Future}
 

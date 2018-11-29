@@ -1,6 +1,9 @@
 package repository
 
 
+import java.text.SimpleDateFormat
+import java.util.Date
+
 import domain.{Order, OrderHasShirt, Shirt, Tables}
 import javax.inject.{Inject, Singleton}
 import play.api.db.slick.{DatabaseConfigProvider, HasDatabaseConfigProvider}
@@ -67,7 +70,9 @@ class OrderRepository @Inject()(protected val dbConfigProvider: DatabaseConfigPr
 
 
   def create(orderRest: OrderRest)(implicit ec: ExecutionContext): Future[Int] = {
-    val order: Order = Order(None, orderRest.date, orderRest.name, orderRest.age)
+    val dateFormatter = new SimpleDateFormat("dd/MM/yyyy hh:mm aa")
+    var submittedDateConvert = new Date()
+    val order: Order = Order(None, dateFormatter.format(submittedDateConvert), orderRest.name, orderRest.age)
     db.run((orders returning orders.map(_.orderId)) += order) flatMap {
       orderId =>
         val orderShirt = orderRest.shirts.map(shirt => OrderHasShirt(None, shirt.shirtId.get, orderId.get))

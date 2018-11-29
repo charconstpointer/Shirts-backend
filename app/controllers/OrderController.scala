@@ -27,10 +27,6 @@ class OrderController @Inject()(orderRepository: OrderRepository, cc: Controller
     }
   }
 
-  def getExample() = Action {
-    Ok(Json.toJson(Order(Some(1), "date", "name", 13)))
-  }
-
   def getAllOrders() = Action.async {
     orderRepository.findAllOrders.map { res => Ok(Json.toJson(res)) }
   }
